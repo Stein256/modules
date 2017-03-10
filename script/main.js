@@ -29,7 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
       
       colorButtonsView = new ColorButtonsView(colorCounterList, buttonsBlock),
       colorBoxView = new ColorBoxView(colorCounterList, colorBlock),
-      colorCountersView = new ColorCountersView(colorCounterList, countersBlock);
+      colorCountersView = new ColorCountersView(colorCounterList, countersBlock),
+      
+      countriesController = new CountriesController();
       
   studentListView.show();
   
