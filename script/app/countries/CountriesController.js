@@ -7,7 +7,7 @@ function CountriesController () {
 
   parrentElem.appendChild(countryListView.getViewElem());
   
-  mediator.sub('countryDelete', country => {
+  mediator.sub('countryDeleted', country => {
     countryList.removeCountry(country);
   });
   

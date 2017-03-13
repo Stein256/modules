@@ -5,7 +5,6 @@ var CountryList = (function () {
     var countries = initCountries();
     
     this.forEach = Array.prototype.forEach.bind(countries);
-    this.filter = Array.prototype.filter.bind(countries);
     
     this.getCountries = function () {
       return countries;
@@ -20,7 +19,16 @@ var CountryList = (function () {
     countries.splice(index, 1);
   }
   
+  function getCountriesOfContinent (continent) {
+    var countries = this.getCountries();
+    if (continent != 'All') {
+      countries = countries.filter(country => country.isOwnContinent(continent));
+    }
+    return countries;
+  }
+  
   CountryList.prototype.removeCountry = removeCountry;
+  CountryList.prototype.getCountriesOfContinent = getCountriesOfContinent;
   
   function initCountries () {
     return countriesData.split('\n').map(countryData => {

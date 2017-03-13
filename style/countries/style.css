@@ -1,3 +1,5 @@
-.liked  td{
-  background-color: #AAF53D !important;
+.simple-little-table tr.liked td{
+  background: #8BB42D;
+  background: -webkit-gradient(linear, left top, left bottom, from(#A8F000), to(#C0F73E));
+  background: -moz-linear-gradient(top,  #A8F000,  #C0F73E);
 }

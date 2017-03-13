@@ -31,6 +31,14 @@ var Country = (function () {
     };
   }
   
+  function isOwnContinent (continent) {
+    return this.get('continent') == continent;
+  }
+  
+  function isLiked () {
+    return this.get('isLiked');
+  }
+  
   function like () {
     var isLiked = this.get('isLiked');
     this.set({
@@ -38,7 +46,9 @@ var Country = (function () {
     });
   }
   
+  Country.prototype.isOwnContinent = isOwnContinent;
   Country.prototype.like = like;
+  Country.prototype.isLiked = isLiked;
   
   return Country;
 })();

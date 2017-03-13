@@ -9,7 +9,7 @@ var CountryView = (function () {
       var countryInfo = country.toJSON();
       viewElem.innerHTML = renderTemplate(countryTemplate, countryInfo);
       
-      if (country.get('liked')) {
+      if (country.isLiked()) {
         viewElem.classList.add('liked');
       }
       
@@ -24,7 +24,7 @@ var CountryView = (function () {
       return viewElem;
     };
     
-    this.remove = function () {
+    function removeViewElem () {
       likeButton.removeEventListener('click', countryLike);
       dislikeButton.removeEventListener('click', countryDislike);
       deleteButton.removeEventListener('click', countryDelete);
@@ -39,14 +39,16 @@ var CountryView = (function () {
       viewElem.classList.toggle('liked');
     }
     
-    var countryDislike = () => {
-      this.remove();
+    function countryDislike () {
+      removeViewElem();
     };
     
     function countryDelete () {
-      countryDislike();
-      mediator.pub('countryDelete', country);
+      removeViewElem();
+      mediator.pub('countryDeleted', country);
     }
+    
+    mediator.sub('coyntryListRendered', removeViewElem);
     
     return this;
   }
