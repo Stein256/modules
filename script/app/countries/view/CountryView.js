@@ -1,57 +1,35 @@
 'use strict';
 
-var CountryView = (function () {
-  function CountryView (country) {
-    var viewElem = document.createElement('tr'),
-        likeButton, dislikeButton, deleteButton;
-    
-    this.getViewElem = function () {
-      var countryInfo = country.toJSON();
-      viewElem.innerHTML = renderTemplate(countryTemplate, countryInfo);
-      
-      if (country.isLiked()) {
-        viewElem.classList.add('liked');
-      }
-      
-      likeButton = viewElem.querySelector('.like-button');
-      dislikeButton = viewElem.querySelector('.dislike-button');
-      deleteButton = viewElem.querySelector('.delete-button');
-      
-      likeButton.addEventListener('click', countryLike, false);
-      dislikeButton.addEventListener('click', countryDislike, false);
-      deleteButton.addEventListener('click', countryDelete, false);
-      
-      return viewElem;
-    };
-    
-    function removeViewElem () {
-      likeButton.removeEventListener('click', countryLike);
-      dislikeButton.removeEventListener('click', countryDislike);
-      deleteButton.removeEventListener('click', countryDelete);
-      
-      if (viewElem.parentNode) {
-        viewElem.parentNode.removeChild(viewElem);
-      }
-    };
-    
-    function countryLike () {
-      country.like();
-      viewElem.classList.toggle('liked');
-    }
-    
-    function countryDislike () {
-      removeViewElem();
-    };
-    
-    function countryDelete () {
-      removeViewElem();
-      mediator.pub('countryDeleted', country);
-    }
-    
-    mediator.sub('coyntryListRendered', removeViewElem);
-    
-    return this;
-  }
+var CountryView = Backbone.View.extend({
+  tagName: 'tr',
   
-  return CountryView;
-})();
+  template: _.template(countryTemplate, {variable: 'data'}),
+  
+  events: {
+    'click .like-button': 'countryLike',
+    'click .dislike-button': 'countryDislike',
+    'click .delete-button': 'countryDelete'
+  },
+  
+  render: function () {
+    this.$el.html(this.template(this.model.toJSON()));
+    if (this.model.isLiked()) {
+      this.$el.addClass('liked');
+    }
+    return this;
+  },
+  
+  countryLike: function () {
+    this.model.like();
+    this.$el.toggleClass('liked');
+  },
+  
+  countryDislike: function () {
+    this.remove();
+  },
+  
+  countryDelete: function () {
+    this.remove();
+    mediator.pub('countryDeleted', this.model);
+  }
+});

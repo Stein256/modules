@@ -1,30 +1,34 @@
-function StudentEditView (parentElem) {
-  var parentElem = parentElem,
-      closeButton, saveButton,
+function StudentEditView ($parentElem) {
+  var closeButton, saveButton,
       viewElem, student;
       
-  mediator.sub('showEdit', show);
-  mediator.sub('showInfo', remove);
-  
-  function show (_student) {
+  this.show = function (_student) {
     student = _student;
     if (viewElem) {
       update();
     } else {
       create();
-      parentElem.appendChild(viewElem);
+      $parentElem.append(viewElem);
     }
-  }
+  };
+  
+  this.remove = function () {
+    if (viewElem) {
+      closeButton.removeEventListener('click', this.remove);
+      saveButton.removeEventListener('click', saveChanges);
+      
+      $parentElem[0].removeChild(viewElem);
+      viewElem = null;
+    }
+  };
   
   function create () {
     viewElem = document.createElement('form');
-    //viewElem.addEventListener('submit', dontSendForm, false);
-    
     render();
   }
   
   function update () {
-    closeButton.removeEventListener('click', remove);
+    closeButton.removeEventListener('click', this.remove);
     saveButton.removeEventListener('click', saveChanges);
     
     render();
@@ -37,24 +41,9 @@ function StudentEditView (parentElem) {
     closeButton = viewElem.querySelector('.close-button');
     saveButton = viewElem.querySelector('.save-button');
     
-    closeButton.addEventListener('click', remove, false);
+    closeButton.addEventListener('click', this.remove, false);
     saveButton.addEventListener('click', saveChanges, false);
   }
-  
-  function remove () {
-    if (viewElem) {
-      closeButton.removeEventListener('click', remove);
-      saveButton.removeEventListener('click', saveChanges);
-      //viewElem.removeEventListener('submit', dontSendForm);
-      
-      parentElem.removeChild(viewElem);
-      viewElem = null;
-    }
-  }
-  
-  /*function dontSendForm (event) {
-    event.preventDefault();
-  }*/
   
   function saveChanges () {
     var changes = {};

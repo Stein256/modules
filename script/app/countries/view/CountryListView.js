@@ -1,41 +1,39 @@
 'use strict';
 
-var CountryListView = (function () {
-  function CountryListView (countryList) {
-    var table = document.createElement('table'),
-        tbody, buttons;
+var CountryListView = function () {
+  var countryViews = [], tbody;
+  
+  return Backbone.View.extend({
+    tagName: 'table',
+    className: 'simple-little-table',
     
-    this.getViewElem = function () {
-      table.innerHTML = countryListTemplate;
-      table.classList.add('simple-little-table');
-      
-      tbody = table.querySelector('tbody');
-      buttons = table.querySelector('form');
-      
-      Array.prototype.forEach.call(buttons.elements, button => {
-        button.addEventListener('click', renderList.bind(null, button.name), false);
-      });
-      
-      renderList('All');
-      
-      return table;
-    };
+    events: {
+      'click form': 'chooseContinent'
+    },
     
-    function renderList (continent) {
-      var countries = countryList.getCountriesOfContinent(continent);
+    render: function () {
+      this.$el.html(countryListTemplate);
+      tbody = this.$('tbody');
+      this.renderList('All');
+      return this;
+    },
+    
+    renderList: function (continent) {
+      var countries = this.collection.getCountriesOfContinent(continent);
       
-      mediator.pub('coyntryListRendered');
+      countryViews.forEach(countryView => countryView.remove());
+      countryViews = [];
       
       countries.forEach(country => {
-        var countryView = new CountryView(country),
-            countryElem = countryView.getViewElem();
+        var countryView = new CountryView({model: country});
             
-        tbody.appendChild(countryElem);
+        countryViews.push(countryView);
+        tbody.append(countryView.render().$el);
       });
-    }
+    },
     
-    return this;
-  }
-  
-  return CountryListView;
-})();
+    chooseContinent: function (event) {
+      this.renderList(event.target.name);
+    }
+  });
+}();

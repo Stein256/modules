@@ -1,7 +1,4 @@
-function StudentListView (parentElem, studentList) {
-  var studentList = studentList,
-      parentElem = parentElem;
-  
+function StudentListView ($parentElem, studentList) {
   this.show = function () {
     var table = document.createElement('table'),
         tbody;
@@ -15,7 +12,7 @@ function StudentListView (parentElem, studentList) {
     });
     
     table.classList.add('simple-little-table');
-    return parentElem.appendChild(table);
+    return $parentElem.append(table);
   };
   
   return this;

@@ -1,20 +1,26 @@
-function StudentInfoView (parentElem) {
-  var parentElem = parentElem,
-      closeButton, editButton,
+function StudentInfoView ($parentElem) {
+  var closeButton, editButton,
       viewElem, student;
       
-  mediator.sub('showInfo', show);
-  mediator.sub('showEdit', remove);
-  
-  function show (_student) {
+  this.show = function (_student) {
     student = _student;
     if (viewElem) {
       update();
     } else {
       create();
-      parentElem.appendChild(viewElem);
+      $parentElem.append(viewElem);
     }
-  }
+  };
+  
+  this.remove = function () {
+    if (viewElem) {
+      closeButton.removeEventListener('click', this.remove);
+      editButton.removeEventListener('click', showEdit);
+      
+      $parentElem[0].removeChild(viewElem);
+      viewElem = null;
+    }
+  };
   
   function create () {
     viewElem = document.createElement('table');
@@ -24,7 +30,7 @@ function StudentInfoView (parentElem) {
   }
   
   function update () {
-    closeButton.removeEventListener('click', remove);
+    closeButton.removeEventListener('click', this.remove);
     editButton.removeEventListener('click', showEdit);
     
     render();
@@ -37,18 +43,8 @@ function StudentInfoView (parentElem) {
     closeButton = viewElem.querySelector('.close-button');
     editButton = viewElem.querySelector('.edit-button');
     
-    closeButton.addEventListener('click', remove, false);
+    closeButton.addEventListener('click', this.remove, false);
     editButton.addEventListener('click', showEdit, false);
-  }
-  
-  function remove () {
-    if (viewElem) {
-      closeButton.removeEventListener('click', remove);
-      editButton.removeEventListener('click', showEdit);
-      
-      parentElem.removeChild(viewElem);
-      viewElem = null;
-    }
   }
   
   function showEdit () {
