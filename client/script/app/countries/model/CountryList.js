@@ -2,6 +2,7 @@
 
 var CountryList = Backbone.Collection.extend({
   model: Country,
+  url: '/getCountryList',
   
   getCountriesOfContinent: function (continent) {
     var countries = this.models;

@@ -1,6 +1,8 @@
 'use strict';
 
 var Country = Backbone.Model.extend ({
+  urlRoot: '/getCountryList',
+  
   defaults: {
     name: '',
     population: 0,

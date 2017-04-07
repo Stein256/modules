@@ -1,27 +1,27 @@
 var studentInfoTemplate = `<tbody>
   <tr>
     <th>Name</th>
-    <td>:name</td>
+    <td><%= data.name %></td>
   </tr>
   <tr>
     <th>Surname</th>
-    <td>:surname</td>
+    <td><%= data.surname %></td>
   </tr>
   <tr>
     <th>Age</th>
-    <td>:age</td>
+    <td><%= data.age %></td>
   </tr>
   <tr>
     <th>Birthday</th>
-    <td>:birthday</td>
+    <td><%= data.birthday.toDateString() %></td>
   </tr>
   <tr>
     <th>Gender</th>
-    <td>:gender</td>
+    <td><%= data.gender %></td>
   </tr>
   <tr>
     <th>Skype</th>
-    <td>:skype</td>
+    <td><%= data.skype %></td>
   </tr>
   <tr>
     <td colspan="2">

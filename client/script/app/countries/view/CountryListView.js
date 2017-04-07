@@ -1,7 +1,7 @@
 'use strict';
 
 var CountryListView = function () {
-  var countryViews = [], tbody;
+  var countryViews = [], $tbody;
   
   return Backbone.View.extend({
     tagName: 'table',
@@ -13,7 +13,7 @@ var CountryListView = function () {
     
     render: function () {
       this.$el.html(countryListTemplate);
-      tbody = this.$('tbody');
+      $tbody = this.$('tbody');
       this.renderList('All');
       return this;
     },
@@ -28,7 +28,7 @@ var CountryListView = function () {
         var countryView = new CountryView({model: country});
             
         countryViews.push(countryView);
-        tbody.append(countryView.render().$el);
+        $tbody.append(countryView.render().$el);
       });
     },
     

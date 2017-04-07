@@ -29,7 +29,7 @@ var CountryView = Backbone.View.extend({
   },
   
   countryDelete: function () {
+    this.model.destroy();
     this.remove();
-    mediator.pub('countryDeleted', this.model);
   }
 });
